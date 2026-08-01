@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -28,7 +29,7 @@ public class Main {
                         System.out.println("\nVocê tem " + i + " chances!");
                         System.out.println("Digite um número: ");
                         tentativa = scanner.nextInt();
-                        if (tentativa < 100 && tentativa > 1){
+                        if (tentativa <= 100 && tentativa >= 1){
                             if(tentativa == num){
                                 System.out.println("Você acertou!!");
                                 break;
@@ -49,7 +50,7 @@ public class Main {
                         System.out.println("Você tem " + i + " chances!");
                         System.out.println("Digite um número: ");
                         tentativa = scanner.nextInt();
-                        if (tentativa < 100 && tentativa > 1){
+                        if (tentativa <= 100 && tentativa >= 1){
                             if(tentativa == num){
                                 System.out.println("Você acertou!!");
                                 break;
@@ -66,23 +67,7 @@ public class Main {
                 break;
                 case 3: {
                     System.out.println("Você escolheu a dificuldade difícil!");
-                    for(int i = 3; i > 0; i--){
-                        System.out.println("Você tem " + i + " chances!");
-                        System.out.println("Digite um número: ");
-                        tentativa = scanner.nextInt();
-                        if (tentativa < 100 && tentativa > 1){
-                            if(tentativa == num){
-                                System.out.println("Você acertou!!");
-                                break;
-                            } else if (tentativa > num) {
-                                System.out.println("O número é menor que " + tentativa);
-                            } else if (tentativa < num) {
-                                System.out.println("O número é maior que " + tentativa);
-                            }
-                        } else {
-                            System.out.println("Escolha um número entre 1 e 100!");
-                        }
-                    }
+
                 }
                 break;
                 default: {
@@ -111,4 +96,37 @@ public class Main {
             }
         }
     }
+    private static boolean jogarRodada(int chances, int num, Scanner scanner){
+        int tentativa;
+        for(int i = chances; i > 0; i--){
+            System.out.println("Você tem " + i + " chances!");
+            System.out.println("Digite um número: ");
+            try{
+                tentativa = scanner.nextInt();
+                if (tentativa <= 100 && tentativa >= 1){
+                    if(tentativa == num){
+                        System.out.println("Você acertou!!");
+                        break;
+                    } else if (tentativa > num) {
+                        System.out.println("O número é menor que " + tentativa);
+                    } else if (tentativa < num) {
+                        System.out.println("O número é maior que " + tentativa);
+                    }
+                } else {
+                    System.out.println("Escolha um número entre 1 e 100!");
+                }
+            } catch (InputMismatchException e){
+                System.out.println("Digite um número entre 1 a 100!");
+            }
+
+        }
+
+
+
+
+
+        return
+    }
 }
+
+
