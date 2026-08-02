@@ -9,7 +9,6 @@ public class Main {
         boolean jogo = true;
         int dificuldade;
         int num;
-        int tentativa;
         int opcaoFim;
 
         System.out.println("Bem vindo ao jogo de adivinhação de números!");
@@ -18,69 +17,24 @@ public class Main {
         System.out.println("Pressione 1 - Fácil: 10 chances");
         System.out.println("Pressione 2 - Médio: 5 chances");
         System.out.println("Pressione 3 - Difícil: 3 chances");
-        dificuldade = scanner.nextInt();
+
+        dificuldade = lerNumeroInteiro(scanner);
 
         while (jogo){
             num = rng.nextInt(100) + 1;
-            switch (dificuldade){
-                case 1: {
-                    System.out.println("\nVocê escolheu a dificuldade fácil!");
-                    for(int i = 10; i > 0; i--){
-                        System.out.println("\nVocê tem " + i + " chances!");
-                        System.out.println("Digite um número: ");
-                        tentativa = scanner.nextInt();
-                        if (tentativa <= 100 && tentativa >= 1){
-                            if(tentativa == num){
-                                System.out.println("Você acertou!!");
-                                break;
-                            } else if (tentativa > num) {
-                                System.out.println("O número é menor que " + tentativa);
-                            } else if (tentativa < num) {
-                                System.out.println("O número é maior que " + tentativa);
-                            }
-                        } else {
-                            System.out.println("Escolha um número entre 1 e 100!");
-                        }
-                    }
-                }
-                break;
-                case 2: {
-                    System.out.println("Você escolheu a dificuldade média!");
-                    for(int i = 5; i > 0; i--){
-                        System.out.println("Você tem " + i + " chances!");
-                        System.out.println("Digite um número: ");
-                        tentativa = scanner.nextInt();
-                        if (tentativa <= 100 && tentativa >= 1){
-                            if(tentativa == num){
-                                System.out.println("Você acertou!!");
-                                break;
-                            } else if (tentativa > num) {
-                                System.out.println("O número é menor que " + tentativa);
-                            } else if (tentativa < num) {
-                                System.out.println("O número é maior que " + tentativa);
-                            }
-                        } else {
-                            System.out.println("Escolha um número entre 1 e 100!");
-                        }
-                    }
-                }
-                break;
-                case 3: {
-                    System.out.println("Você escolheu a dificuldade difícil!");
+            String[] nomesDificuldade = {"fácil", "médio", "difícil"};
+            int[] chancesPorDificuldade = {10, 5, 3};
 
-                }
-                break;
-                default: {
-                    System.out.println("Selecione um número válido: ");
-                    dificuldade = scanner.nextInt();
-                }
-                break;
-            }
+            System.out.println("\nVocê escolheu a dificuldade " + nomesDificuldade[dificuldade - 1] + "!");
+            jogarRodada(chancesPorDificuldade[dificuldade - 1], num, scanner);
+            
             System.out.println("Quer continuar a jogar ?");
             System.out.println("Pressione 1 - Continuar");
             System.out.println("Pressione 2 - Mudar dificuldade");
             System.out.println("Pressione 3 - Sair do jogo");
-            opcaoFim = scanner.nextInt();
+
+            opcaoFim = lerNumeroInteiro(scanner);
+
             switch (opcaoFim){
                 case 1: break;
                 case 2: {
@@ -88,18 +42,18 @@ public class Main {
                     System.out.println("Pressione 1 - Fácil: 10 chances");
                     System.out.println("Pressione 2 - Médio: 5 chances");
                     System.out.println("Pressione 3 - Difícil: 3 chances");
-                    dificuldade = scanner.nextInt();
+                    dificuldade = lerNumeroInteiro(scanner);
                     break;
                 }
                 case 3: System.out.println("Saindo do jogo..."); jogo = false; break;
-                default: System.out.println("Selecione um número válido: "); opcaoFim = scanner.nextInt();
             }
         }
     }
-    private static boolean jogarRodada(int chances, int num, Scanner scanner){
+
+    private static void jogarRodada(int chances, int num, Scanner scanner){
         int tentativa;
-        for(int i = chances; i > 0; i--){
-            System.out.println("Você tem " + i + " chances!");
+        while(chances > 0){
+            System.out.println("Você tem " + chances + " chances!");
             System.out.println("Digite um número: ");
             try{
                 tentativa = scanner.nextInt();
@@ -112,20 +66,34 @@ public class Main {
                     } else if (tentativa < num) {
                         System.out.println("O número é maior que " + tentativa);
                     }
+                    chances--;
                 } else {
                     System.out.println("Escolha um número entre 1 e 100!");
+                    continue;
                 }
             } catch (InputMismatchException e){
-                System.out.println("Digite um número entre 1 a 100!");
+                System.out.println("Digite um número entre 1 e 100!");
             }
-
         }
+        if(chances == 0){
+            System.out.println("Suas chances acabaram, você perdeu!");
+        }
+        return;
+    }
 
-
-
-
-
-        return
+    private static int lerNumeroInteiro(Scanner scanner){
+        int valor;
+        do {
+            while (!scanner.hasNextInt()) {
+                System.out.println("Digite um número válido!");
+                scanner.next();
+            }
+            valor = scanner.nextInt();
+            if (valor < 1 || valor > 3) {
+                System.out.println("Escolha entre 1, 2 ou 3!");
+            }
+        } while (valor < 1 || valor > 3);
+        return valor;
     }
 }
 
